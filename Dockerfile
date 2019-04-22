@@ -5,6 +5,8 @@ LABEL maintainer "Thomas Purrer"
 ENV exe "https://go.microsoft.com/fwlink/?linkid=840945"
 ENV box "https://go.microsoft.com/fwlink/?linkid=840944"
 
+ENV attach_dbs="[]" 
+
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 COPY start.ps1 /
@@ -23,4 +25,4 @@ RUN stop-service MSSQLSERVER ; \
 
 HEALTHCHECK CMD [ "sqlcmd", "-Q", "select 1" ]
 
-CMD .\start -sa_password $env:sa_password -Verbose
+CMD .\start -sa_password $env:sa_password -attach_dbs \"$env:attach_dbs\" -Verbose
