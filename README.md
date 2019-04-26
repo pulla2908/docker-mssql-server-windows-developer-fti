@@ -3,10 +3,15 @@
 # Content
 Docker definition for Microsoft SQL Server Developer 2017 including **Full-Text Index** enabled based on Windows Server Core 1809. This docker definition is a fork from [Microsoft/mssql-docker on GitHub](https://github.com/Microsoft/mssql-docker) and was extended to support Full-Text Index.
 
-# Requirements
 This image is compatible with Windows Server 2016 and Windows 10.
 
-# Configuration
+# How to use this docker definition
+## Get started
+Create image from docker definition:
+```
+docker build -t mssql-developer-fti .
+```
+## How to configure
 ```
 SA_PASSWORD (mandatory)
 ```
@@ -28,12 +33,7 @@ Attach a set of databases to the server automatically when creating the containe
 > - dbName: The name of the database
 > - dbFiles: Database files **within the container**
 
-# How to use
-Create image from docker definition:
-```
-docker build -t mssql-developer-fti .
-```
-
+## Create container from image
 To create a new container run the following command:
 ```
 docker run -e SA_PASSWORD=<sa-password> -p 1533:1433 -d --name mssql-fti mssql-developer-fti
