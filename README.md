@@ -1,7 +1,7 @@
-# Windows Docker Image for Sql Server 2017 with Full-Text Index
+# Windows Docker Image for Microsoft Sql Server 2017 Developer with Full-Text Index
 
 # Content
-Docker definition for Microsoft SQL Server Developer 2017 including **Full-Text Index** enabled based on Windows Server Core 1809. This docker definition is a fork from [Microsoft/mssql-docker on GitHub](https://github.com/Microsoft/mssql-docker) and was extended to support Full-Text Index.
+Docker definition for Microsoft SQL Server 2017 Developer including **Full-Text Index** enabled based on Windows Server Core 1809. This docker definition is a fork from [Microsoft/mssql-docker on GitHub](https://github.com/Microsoft/mssql-docker) and was extended to support Full-Text Index.
 
 This image is compatible with Windows Server 2016 and Windows 10.
 
@@ -9,7 +9,7 @@ This image is compatible with Windows Server 2016 and Windows 10.
 ## Get started
 Create image from docker definition:
 ```
-docker build -t mssql-developer-fti .
+docker build -t mssql-server-windows-developer-fti .
 ```
 ## How to configure
 ```
@@ -36,12 +36,12 @@ Attach a set of databases to the server automatically when creating the containe
 ## Create container from image
 To create a new container run the following command:
 ```
-docker run -e SA_PASSWORD=<sa-password> -p 1533:1433 -d --name mssql-fti mssql-developer-fti
+docker run -e SA_PASSWORD=<sa-password> -p 1533:1433 -d --name mssql-fti mssql-server-windows-developer-fti
 ```
 
 Create a new container and attach a database (e.g. database 'SampleDB' exists at c:/databases/):
 ```
-docker run -e SA_PASSWORD=<sa-password> -v C:/databases/:C:/databases/ -e ATTACH_DBS="[{'dbName':'SampleDB','dbFiles':['C:\\databases\\SampleDB.mdf','C:\\databases\\SampleDB.ldf']}]" -p 1533:1433 -d --name mssql-fti mssql-developer-fti
+docker run -e SA_PASSWORD=<sa-password> -v C:/databases/:C:/databases/ -e ATTACH_DBS="[{'dbName':'SampleDB','dbFiles':['C:\\databases\\SampleDB.mdf','C:\\databases\\SampleDB.ldf']}]" -p 1533:1433 -d --name mssql-fti mssql-server-windows-developer-fti
 ```
 
 To connect to the server you can use e.g. [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017).
