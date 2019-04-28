@@ -3,7 +3,7 @@
 # Content
 Docker definition for Microsoft SQL Server 2017 Developer including **Full-Text Index** enabled based on Windows Server Core 1809. This docker definition is a fork from [Microsoft/mssql-docker on GitHub](https://github.com/Microsoft/mssql-docker) and was extended to support Full-Text Index.
 
-This image is compatible with Windows Server 2016 and Windows 10.
+This image is compatible with Windows Server 2016 and Windows 10 and available at [hub.docker.com](https://hub.docker.com/r/pulla/mssql-server-windows-developer-fti)
 
 # How to use this docker definition
 ## Get started
