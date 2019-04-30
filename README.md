@@ -16,6 +16,9 @@ docker build -t mssql-server-windows-developer-fti .
 SA_PASSWORD (mandatory)
 ```
 When creating a container a password needs to be provided. The password must be strong and full-fill sql server **password policy** (e.g. a GUID ;-) ). Regarding password policy have a look at [Password Policy](https://docs.microsoft.com/en-us/sql/relational-databases/security/password-policy?view=sql-server-2017)
+
+All samples here use following valid default password: **Password123**
+
 ```
 ATTACH_DBS (optional)
 ```
@@ -24,7 +27,7 @@ Attach a set of databases to the server automatically when creating the containe
 >[
 >   {
 >       'dbName': 'SampleDB', 
->       'dbFiles': ['C:\\databases\\SampleDB.mdf', 'C:\\databases\\SampleDB.ldf']
+>       'dbFiles': ['c:\\databases\\SampleDB.mdf', 'c:\\databases\\SampleDB.ldf']
 >   },
 >   ...
 >]
@@ -36,18 +39,18 @@ Attach a set of databases to the server automatically when creating the containe
 ## Create container from image
 To create a new container run the following command:
 ```
-docker run -e SA_PASSWORD=<sa-password> -p 1533:1433 -d --name mssql-fti mssql-server-windows-developer-fti
+docker run -e "SA_PASSWORD=Password123" -p 1533:1433 -d --name mssql-fti mssql-server-windows-developer-fti
 ```
 
-Create a new container and attach a database (e.g. database 'SampleDB' exists at c:/databases/):
+Create a new container and attach a database (e.g. database 'SampleDB' exists at c:\databases\):
 ```
-docker run -e SA_PASSWORD=<sa-password> -v C:/databases/:C:/databases/ -e ATTACH_DBS="[{'dbName':'SampleDB','dbFiles':['C:\\databases\\SampleDB.mdf','C:\\databases\\SampleDB.ldf']}]" -p 1533:1433 -d --name mssql-fti mssql-server-windows-developer-fti
+docker run -e "SA_PASSWORD=Password123" -v "c:/databases/:C:/databases/" -e "ATTACH_DBS=[{'dbName':'SampleDB','dbFiles':['c:\\databases\\SampleDB.mdf','c:\\databases\\SampleDB_log.ldf']}]" -p 1533:1433 -d --name mssql-fti mssql-server-windows-developer-fti
 ```
 
 To connect to the server you can use e.g. [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017).
 For an app the connectionstring should look like this:
 ```
-Connectionstring for container: Data Source=localhost,1533; User Id=sa; pwd=<sa-password>;
+Connectionstring for container: Data Source=localhost,1533; User Id=sa; pwd=Password123;
 ```
 
 # Some useful commands
@@ -63,9 +66,19 @@ docker logs mssql-fti
 
 Connect to the container via sqlcmd:
 ```
-sqlcmd -U sa -P <sa-password> -S localhost,1533
-> print Suser_Sname()
+sqlcmd -U sa -P Password123 -S localhost,1533
+> SELECT name FROM master.sys.databases
 > GO
->> Should show "sa"
+>> Should show a list of databases
 > QUIT
+```
+
+Execute sqlcmd within the container and list databases:
+```
+docker exec mssql-fti sqlcmd -q "SELECT name FROM master.sys.databases"
+```
+
+Restore a database from backup within the container. Note: c:\databases is mounted to the container and the original file location of the backup is c:\databases.
+```
+docker exec mssql-fti sqlcmd -q "RESTORE DATABASE SampleDB FROM DISK = 'c:\databases\SampleDB.bak'"
 ```
