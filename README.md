@@ -64,7 +64,7 @@ View logs for trouble shooting:
 docker logs mssql-fti
 ```
 
-Connect to the container via sqlcmd:
+Connect to the container via sqlcmd and list databases:
 ```
 sqlcmd -U sa -P Password123 -S localhost,1533
 > SELECT name FROM master.sys.databases
