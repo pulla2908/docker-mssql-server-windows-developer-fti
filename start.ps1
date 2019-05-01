@@ -3,7 +3,10 @@ param(
     [string]$sa_password,
 
     [Parameter(Mandatory=$false)]
-    [string]$attach_dbs
+    [string]$attach_dbs,
+
+    [Parameter(Mandatory=$false)]
+    [string]$restore_dbs
 )
 
 Write-Verbose "Starting SQL Server"
@@ -21,14 +24,13 @@ else
 }
 
 $attach_dbs_cleaned = $attach_dbs.TrimStart('\\').TrimEnd('\\')
+$attach_dbs_Json = $attach_dbs_cleaned | ConvertFrom-Json
 
-$dbs = $attach_dbs_cleaned | ConvertFrom-Json
-
-if ($null -ne $dbs -And $dbs.Length -gt 0)
+if ($null -ne $attach_dbs_Json -And $attach_dbs_Json.Length -gt 0)
 {
-    Write-Verbose "Attaching $($dbs.Length) database(s)"
+    Write-Verbose "Attaching $($attach_dbs_Json.Length) database(s)"
 	    
-    Foreach($db in $dbs) 
+    Foreach($db in $attach_dbs_Json) 
     {            
         $files = @();
         Foreach($file in $db.dbFiles)
@@ -38,6 +40,22 @@ if ($null -ne $dbs -And $dbs.Length -gt 0)
 
         $files = $files -join ","
         $sqlcmd = "IF EXISTS (SELECT 1 FROM SYS.DATABASES WHERE NAME = '" + $($db.dbName) + "') BEGIN EXEC sp_detach_db [$($db.dbName)] END;CREATE DATABASE [$($db.dbName)] ON $($files) FOR ATTACH;"
+
+        Write-Verbose "Invoke-Sqlcmd -Query $($sqlcmd)"
+        & sqlcmd -Q $sqlcmd
+	}
+}
+
+$restore_dbs_cleaned = $restore_dbs.TrimStart('\\').TrimEnd('\\')
+$restore_dbs_Json = $restore_dbs_cleaned | ConvertFrom-Json
+
+if ($null -ne $restore_dbs_Json -And $restore_dbs_Json.Length -gt 0)
+{
+    Write-Verbose "Restoring $($restore_dbs_Json.Length) database(s)"
+	    
+    Foreach($db in $restore_dbs_Json) 
+    {            
+        $sqlcmd = "RESTORE DATABASE " + $($db.dbName) + " FROM DISK = '" + $($db.dbBackup) + "'"
 
         Write-Verbose "Invoke-Sqlcmd -Query $($sqlcmd)"
         & sqlcmd -Q $sqlcmd
