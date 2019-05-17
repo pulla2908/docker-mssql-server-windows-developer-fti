@@ -11,6 +11,8 @@ ENV restore_dbs="[]"
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 COPY start.ps1 /
+COPY restore.sql /
+
 WORKDIR /
 
 RUN Invoke-WebRequest -Uri $env:box -OutFile SQL.box ; \

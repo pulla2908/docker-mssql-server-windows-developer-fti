@@ -55,10 +55,11 @@ if ($null -ne $restore_dbs_Json -And $restore_dbs_Json.Length -gt 0)
 	    
     Foreach($db in $restore_dbs_Json) 
     {            
-        $sqlcmd = "RESTORE DATABASE " + $($db.dbName) + " FROM DISK = '" + $($db.dbBackup) + "'"
+        $parameters = @("backup=" + $db.dbBackup + "") + @("databaseName=" + $db.dbName + "") + @("databaseLocation=" + $db.dbLocation + "")
 
-        Write-Verbose "Invoke-Sqlcmd -Query $($sqlcmd)"
-        & sqlcmd -Q $sqlcmd
+        Write-Host "Parameters for restore:" $parameters
+
+        Invoke-Sqlcmd -InputFile "restore.sql" -Variable $parameters
 	}
 }
 
