@@ -36,6 +36,26 @@ Attach a set of databases to the server automatically when creating the containe
 > - dbName: The name of the database
 > - dbFiles: Database files **within the container**
 
+```
+RESTORE_DBS (optional)
+```
+Restore a set of database backups to the server automatically when creating the container. The set is configured in JSON. This parameter must be used in combination to **-v** to mount the physical backup location.
+>```
+>[
+>   {
+>       'dbName': 'SampleDB', 
+>       'dbBackup': 'C:\\databases\\SampleDB.bak',
+>       'dbLocation': 'C:\\databases\\'
+>   },
+>   ...
+>]
+>```
+
+> - dbName: The name of the database
+> - dbBackup: The location of the backup **within the container**
+> - dbLocation: Specifies the location **within the container** where database files of the backup should be relocated
+
+
 ## Create container from image
 To create a new container run the following command:
 ```
@@ -45,6 +65,11 @@ docker run -e "SA_PASSWORD=Password123" -p 1533:1433 -d --name mssql-fti mssql-s
 Create a new container and attach a database (e.g. database 'SampleDB' exists at c:\databases\):
 ```
 docker run -e "SA_PASSWORD=Password123" -v "c:/databases/:C:/databases/" -e "ATTACH_DBS=[{'dbName':'SampleDB','dbFiles':['c:\\databases\\SampleDB.mdf','c:\\databases\\SampleDB_log.ldf']}]" -p 1533:1433 -d --name mssql-fti mssql-server-windows-developer-fti
+```
+
+Create a new container and restore a backup of a database (e.g. backup exists at c:\databases\):
+```
+docker run -e "SA_PASSWORD=Password123" -v "c:/databases/:C:/databases/" -e "RESTORE_DBS=[{'dbName':'SampleDB','dbBackup':'C:\\databases\\SampleDB.bak', 'dbLocation':'C:\\databases\\'}]" -p 1533:1433 -d --name mssql-fti mssql-server-windows-developer-fti
 ```
 
 To connect to the server you can use e.g. [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017).
