@@ -5,6 +5,8 @@ Docker definition for Microsoft SQL Server 2017 Developer including **Full-Text 
 
 This image is compatible with Windows Server 2016 and Windows 10 and available at [hub.docker.com](https://hub.docker.com/r/pulla/mssql-server-windows-developer-fti)
 
+![](https://img.shields.io/docker/pulls/pulla/mssql-server-windows-developer-fti.svg)
+
 # How to use this docker definition
 ## Get started
 Create image from docker definition:
