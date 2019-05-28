@@ -20,8 +20,8 @@ DECLARE @fileListTable TABLE (
     [DifferentialBaseGUID]  UNIQUEIDENTIFIER,
     [IsReadOnly]            BIT,
     [IsPresent]             BIT,
-    [TDEThumpprint]			NVARCHAR(128),
-    [SnapshotUrl]			NVARCHAR(128)
+    [TDEThumpprint]         NVARCHAR(128),
+    [SnapshotUrl]           NVARCHAR(128)
 )
 INSERT INTO @fileListTable EXEC(N'RESTORE FILELISTONLY FROM DISK=''$(backup)''')
 SELECT * FROM @fileListTable
