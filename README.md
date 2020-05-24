@@ -13,6 +13,10 @@ Create image from docker definition:
 ```
 docker build -t mssql-server-windows-developer-fti .
 ```
+Note: If you get an error like 'The remote name could not be resolved: 'go.microsoft.com'' then try to add **--network "Default Switch"** and run again (see [cannot resolve go.microsoft.com](https://github.com/pulla2908/docker-mssql-server-windows-developer-fti/issues/2)):
+```
+docker build -t mssql-server-windows-developer-fti . --network "Default Switch"
+```
 ## How to configure
 ```
 SA_PASSWORD (mandatory)
