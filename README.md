@@ -83,6 +83,13 @@ For an app the connectionstring should look like this:
 ```
 Connectionstring for container: Data Source=localhost,1533; User Id=sa; pwd=Password123;
 ```
+Known Issue when connection with `SQL Server Management Studio`:
+```
+A connection was successfully established with the server, but then an error occurred during the login process. (provider: SSL Provider, error: 0 - The certificate chain was issued by an authority that is not trusted.) (Microsoft SQL Server, Error: -2146893019)
+
+The certificate chain was issued by an authority that is not trusted.
+```
+In this case take a look at [this](https://stackoverflow.com/questions/17615260/the-certificate-chain-was-issued-by-an-authority-that-is-not-trusted-when-conn) conversation.
 
 # Some useful commands
 The ip address of the server can be obtained by this:
