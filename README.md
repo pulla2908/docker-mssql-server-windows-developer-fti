@@ -21,7 +21,7 @@ docker build -t mssql-server-windows-developer-fti . --network "Default Switch"
 ```
 SA_PASSWORD (mandatory)
 ```
-When creating a container a password needs to be provided. The password must be strong and full-fill sql server **password policy** (e.g. a GUID ;-) ). Regarding password policy have a look at [Password Policy](https://docs.microsoft.com/en-us/sql/relational-databases/security/password-policy?view=sql-server-2017)
+When creating a container a password needs to be provided. The password must be strong and full-fill sql server **password policy** (e.g. a GUID ;-) ). Regarding password policy have a look at [Password Policy](https://docs.microsoft.com/en-us/sql/relational-databases/security/password-policy)
 
 All samples here use following valid default password: **Password123**
 
@@ -78,7 +78,7 @@ Create a new container and restore a backup of a database (e.g. backup exists at
 docker run -e "SA_PASSWORD=Password123" -v "c:/databases/:C:/databases/" -e "RESTORE_DBS=[{'dbName':'SampleDB','dbBackup':'C:\\databases\\SampleDB.bak', 'dbLocation':'C:\\databases\\'}]" -p 1533:1433 -d --name mssql-fti mssql-server-windows-developer-fti
 ```
 
-To connect to the server you can use e.g. [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017).
+To connect to the server you can use e.g. [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms).
 For an app the connectionstring should look like this:
 ```
 Connectionstring for container: Data Source=localhost,1533; User Id=sa; pwd=Password123;
